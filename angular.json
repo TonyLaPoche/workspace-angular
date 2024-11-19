@@ -35,6 +35,7 @@
               }
             ],
             "styles": [
+              "node_modules/@angular/material/prebuilt-themes/azure-blue.css",
               "projects/reactive-forms/src/styles.scss"
             ],
             "scripts": []
@@ -94,6 +95,7 @@
               }
             ],
             "styles": [
+              "node_modules/@angular/material/prebuilt-themes/azure-blue.css",
               "projects/reactive-forms/src/styles.scss"
             ],
             "scripts": []

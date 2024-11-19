@@ -1,0 +1,69 @@
+<form [formGroup]="registerForm" (ngSubmit)="submitAuth()" class="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
+    <div class="flex justify-center items-center mb-4">
+        <hr class="w-1/2 mx-auto">
+        <h2 class="px-2.5 text-lg">User</h2>
+        <hr class="w-1/2 mx-auto">
+    </div>
+    <div formGroupName="user">
+        <div class="row flex flex-col">
+            <mat-form-field class="col-span-12">
+                <mat-label>Name</mat-label>
+                <input matInput placeholder="Name" formControlName="name"/>
+            </mat-form-field>
+            <mat-form-field class="col-span-12">
+                <mat-label>Last name</mat-label>
+                <input matInput placeholder="lastName" formControlName="lastName"/>
+            </mat-form-field>
+            <mat-form-field class="col-span-12">
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="email" formControlName="email"/>
+            </mat-form-field>
+            <mat-form-field class="col-span-12">
+                <mat-label>Age</mat-label>
+                <input matInput placeholder="age" formControlName="age"/>
+            </mat-form-field>
+            <mat-form-field class="col-span-12">
+                <mat-label>Phone number</mat-label>
+                <input matInput placeholder="phoneNumber" formControlName="phoneNumber"/>
+            </mat-form-field>
+            <mat-form-field class="col-span-12">
+                <mat-label>Password</mat-label>
+                <input matInput placeholder="password" formControlName="password"/>
+            </mat-form-field>
+            <mat-form-field class="col-span-12">
+                <mat-label>Repeat password</mat-label>
+                <input matInput placeholder="Password" formControlName="passwordConfirm"/>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="flex justify-center items-center mb-4">
+        <hr class="w-1/2 mx-auto">
+        <h2 class="px-2.5 text-lg">Address</h2>
+        <hr class="w-1/2 mx-auto">
+    </div>
+    <div formGroupName="address">
+        <div class="row flex flex-col">
+            <mat-form-field class="col-span-12">
+                <mat-label>Street</mat-label>
+                <input matInput placeholder="street" formControlName="street"/>
+            </mat-form-field>
+            <mat-form-field class="col-span-12">
+                <mat-label>City</mat-label>
+                <input matInput placeholder="city" formControlName="city"/>
+            </mat-form-field>
+            <mat-form-field class="col-span-12">
+                <mat-label>ZipCode</mat-label>
+                <input matInput placeholder="zipCode" formControlName="zipcode"/>
+            </mat-form-field>
+        </div>
+
+    </div>
+    <div>
+        <button
+                type="submit"
+                class="w-full bg-blue-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+            Send
+        </button>
+    </div>
+</form>
