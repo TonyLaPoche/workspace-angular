@@ -1,17 +1,90 @@
-<form [formGroup]="authenticate" (ngSubmit)="submitAuth()"
+<form [formGroup]="registerForm" (ngSubmit)="submitAuth()"
       class="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
     <div class="flex justify-center items-center">
         <hr class="w-1/2 mx-auto">
         <h2 class="px-2.5">User</h2>
         <hr class="w-1/2 mx-auto">
     </div>
-    <app-form-user [userGrp]="authenticate.controls.user"/>
+    <div formGroupName="user">
+        <div class="mb-4">
+            <label for="name" class="block text-sm font-medium text-gray-700">Nom</label>
+            <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    formControlName="name"
+                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+        </div>
+        <div class="mb-4">
+            <label for="lastName" class="block text-sm font-medium text-gray-700">Prénom</label>
+            <input
+                    type="text"
+                    name="lastName"
+                    id="lastName"
+                    formControlName="lastName"
+                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+        </div>
+        <div class="mb-4">
+            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+            <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    formControlName="email"
+                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+        </div>
+    </div>
     <div class="flex justify-center items-center">
         <hr class="w-1/2 mx-auto">
         <h2 class="px-2.5">Address</h2>
         <hr class="w-1/2 mx-auto">
     </div>
-    <app-form-adresse [address]="authenticate.controls.address"/>
+    <div formGroupName="address">
+        <div class="mb-4">
+            <label for="city" class="block text-sm font-medium text-gray-700">Ville</label>
+            <input
+                    type="text"
+                    name="city"
+                    id="city"
+                    formControlName="city"
+                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+        </div>
+        <div class="mb-4">
+            <label for="state" class="block text-sm font-medium text-gray-700">État / Région</label>
+            <input
+                    type="text"
+                    id="state"
+                    name="state"
+                    formControlName="state"
+                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+        </div>
+        <div class="mb-4">
+            <label for="zipcode" class="block text-sm font-medium text-gray-700">Code Postal</label>
+            <input
+                    type="text"
+                    name="zipcode"
+                    id="zipcode"
+                    formControlName="zipcode"
+                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+        </div>
+        <div class="mb-4">
+            <label for="country" class="block text-sm font-medium text-gray-700">Pays</label>
+            <input
+                    type="text"
+                    name="country"
+                    id="country"
+                    formControlName="country"
+                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+        </div>
+
+    </div>
     <div>
         <button
                 type="submit"
