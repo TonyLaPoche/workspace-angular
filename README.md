@@ -1,27 +1,81 @@
-# AngularPractice
+# Ensemble de Projets Angular 18.2
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.11.
+Ce dépôt regroupe une série de projets et d'exercices réalisés dans le cadre de ma veille technique et de mon apprentissage des bonnes pratiques sur **Angular 18.2**. Ce repository est un peu un fourre-tout, regroupant divers points techniques abordés avec mon Mentor, et a pour objectif de me permettre de renforcer mes compétences en développement **frontend**.
 
-## Development server
+Les projets incluent des démonstrations de **formulaires réactifs**, de **validations de formulaire**, et autres bonnes pratiques Angular/TypeScript.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Technologies utilisées
 
-## Code scaffolding
+- **Angular 18.2**
+- **TypeScript**
+- **IntelliJ IDEA** (IDE utilisé pour le développement)
+- **Reactive Forms** & **Template-Driven Forms**
+- **Form Validation**
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Objectifs d'apprentissage
 
-## Build
+Ce projet a pour but de me permettre de pratiquer et d'améliorer mes compétences en :
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- Maîtriser les **formulaires réactifs** (Reactive Forms) et **formulaires basés sur un template** (Template-Driven Forms)
+- Implémenter des **validations de formulaires** côté client
+- Améliorer mes compétences en **TypeScript** et en **Angular**
+- Appliquer les principes de développement **Frontend** sur des projets concrets
+- M'améliorer en tant que **développeur junior** et en apprendre davantage sur l'écosystème Angular
 
-## Running unit tests
+## Structure du projet
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- **/src** : Dossier contenant les projets Angular
+- **/assets** : Dossier contenant des ressources et des images pour les projets
 
-## Running end-to-end tests
+## Installation
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+1. Clone ce dépôt sur ta machine locale.
+   ```bash
+   git clone https://github.com/ton-utilisateur/nom-du-repository.git
+   ```
 
-## Further help
+2. Accède au dossier du projet :
+   ```bash
+   cd nom-du-repository
+   ```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+3. Installe les dépendances avec npm :
+   ```bash
+   npm install
+   ```
+
+4. Lance l'application Angular en mode développement :
+   ```bash
+   ng serve
+   ```
+
+5. Accède à l'application sur [http://localhost:4200](http://localhost:4200)
+
+## Projets et défis
+
+Chaque projet inclut un ensemble de fonctionnalités et de défis à résoudre pour améliorer la compréhension des concepts Angular, comme la gestion des formulaires et des validations. Voici quelques exemples de ce qui peut être trouvé dans ce dépôt :
+
+- **Validation des formulaires** (simple et complexe)
+- **Utilisation de formulaires réactifs** avec gestion dynamique des champs
+- **Développement d'une application complète** en utilisant Angular
+- **Suivi d'exercices pratiques** basés sur des **Frontend Mentor Challenges**
+
+## Technologies et outils
+
+Les projets sont développés avec les technologies suivantes :
+
+- **Angular 18.2** pour le développement frontend
+- **TypeScript** pour la gestion des types
+- **RxJS** pour la gestion des flux de données
+- **Node.js** et **npm** pour la gestion des dépendances et le lancement des projets
+- **IntelliJ IDEA** comme éditeur de code (mais tout autre éditeur peut être utilisé)
+
+## Contribuer
+
+Si tu veux contribuer à ce dépôt, n'hésite pas à soumettre des **pull requests** ou à ouvrir des **issues** pour poser des questions ou suggérer des améliorations.
+
+## License
+
+Ce projet est sous licence MIT. Consulte le fichier LICENSE pour plus de détails.
+
+
