@@ -9,30 +9,66 @@
             <mat-form-field class="col-span-12">
                 <mat-label>Name</mat-label>
                 <input matInput placeholder="Name" formControlName="name"/>
+                @if (userForm.controls.name.hasError('required')) {
+                    <mat-error>Name is required</mat-error>
+                }
+                @if (userForm.controls.name.hasError('minlength') || userForm.controls.name.hasError('maxlength')) {
+                    <mat-error>The name require min 2 characters and max 50</mat-error>
+                }
             </mat-form-field>
             <mat-form-field class="col-span-12">
                 <mat-label>Last name</mat-label>
                 <input matInput placeholder="lastName" formControlName="lastName"/>
+                @if (userForm.controls.lastName.hasError('required')) {
+                    <mat-error>Name is required</mat-error>
+                }
+                @if (userForm.controls.lastName.hasError('minlength') || userForm.controls.lastName.hasError('maxlength')) {
+                    <mat-error>The name require min 2 characters and max 50</mat-error>
+                }
             </mat-form-field>
             <mat-form-field class="col-span-12">
                 <mat-label>Email</mat-label>
                 <input matInput placeholder="email" formControlName="email"/>
+                @if (userForm.controls.email.hasError('required')) {
+                    <mat-error>Email is required</mat-error>
+                }
+                @if (userForm.controls.email.hasError('valid')) {
+                    <mat-error>Email valid is required</mat-error>
+                }
             </mat-form-field>
             <mat-form-field class="col-span-12">
                 <mat-label>Age</mat-label>
                 <input matInput placeholder="age" formControlName="age"/>
+                @if (userForm.controls.age.hasError('required')) {
+                    <mat-error>Age is required</mat-error>
+                }
+                @if (userForm.controls.age.hasError('min') || userForm.controls.age.hasError('max')) {
+                    <mat-error>Age must be between 18 and 100 years old</mat-error>
+                }
             </mat-form-field>
             <mat-form-field class="col-span-12">
                 <mat-label>Phone number</mat-label>
                 <input matInput placeholder="phoneNumber" formControlName="phoneNumber"/>
+                @if (userForm.controls.phoneNumber.hasError('pattern')) {
+                    <mat-error>Phone Number must be contains exactly 10 numbers</mat-error>
+                }
             </mat-form-field>
             <mat-form-field class="col-span-12">
                 <mat-label>Password</mat-label>
                 <input matInput placeholder="password" formControlName="password"/>
+                @if (userForm.controls.password.hasError('required')) {
+                    <mat-error>password is required</mat-error>
+                }
+                @if (userForm.controls.password.getError('minlength'); as minlengthError) {
+                    <mat-error>password must have {{ minlengthError.requiredLength }} character minimum</mat-error>
+                }
             </mat-form-field>
             <mat-form-field class="col-span-12">
                 <mat-label>Repeat password</mat-label>
                 <input matInput placeholder="Password" formControlName="passwordConfirm"/>
+                @if (userForm.controls.passwordConfirm.hasError('matching')) {
+                    <mat-error>Password must match</mat-error>
+                }
             </mat-form-field>
         </div>
     </div>
@@ -46,6 +82,9 @@
             <mat-form-field class="col-span-12">
                 <mat-label>Street</mat-label>
                 <input matInput placeholder="street" formControlName="street"/>
+                @if(addressForm.controls.street.hasError('required')) {
+                    <mat-error>Street is required</mat-error>
+                }
             </mat-form-field>
             <mat-form-field class="col-span-12">
                 <mat-label>City</mat-label>
