@@ -64,7 +64,7 @@
             <mat-form-field class="col-span-12">
                 <mat-label>Password</mat-label>
                 <input matInput type="password" placeholder="password" autocomplete="new-password"
-                       formControlName="password"/>
+                       formControlName="password" [errorStateMatcher]="passwordStateMatcher"/>
                 @if (userForm.controls.password.hasError('required')) {
                     <mat-error>password is required</mat-error>
                 }
@@ -75,11 +75,11 @@
             <mat-form-field class="col-span-12">
                 <mat-label>Repeat password</mat-label>
                 <input matInput type="password" placeholder="Password" autocomplete="new-password"
-                       formControlName="passwordConfirm"/>
+                       formControlName="passwordConfirm" [errorStateMatcher]="passwordStateMatcher" />
                 @if (userForm.controls.passwordConfirm.hasError('required')) {
                     <mat-error>Repeated password is required and must match</mat-error>
                 }
-                @if (userForm.controls.passwordConfirm.hasError('matching')) {
+                @if (userForm.hasError('passwordMismatch')) {
                     <mat-error>Password must match</mat-error>
                 }
             </mat-form-field>
@@ -133,12 +133,54 @@
                 <mat-form-field class="col-span-12">
                     <mat-label>Newsletter frequency</mat-label>
                     <mat-select formControlName="newsletterFrequency">
-                        <mat-option>daily</mat-option>
-                        <mat-option>weekly</mat-option>
-                        <mat-option>monthly</mat-option>
+                        <mat-option value="daily">daily</mat-option>
+                        <mat-option value="weekly">weekly</mat-option>
+                        <mat-option value="monthly">monthly</mat-option>
                     </mat-select>
+                    @if (optionalForm.controls.newsletterFrequency.hasError('required')) {
+                        <mat-error>You need to choose frequency to subscribe</mat-error>
+                    }
                 </mat-form-field>
             }
+
+            <div formArrayName="hobbiesItems">
+                <div class="w-full flex justify-between items-center pb-2.5">
+                    <h4 class="text-lg">Hobbies</h4>
+                    <button
+                            mat-icon-button
+                            color="primary"
+                            aria-label="Add item"
+                            type="button"
+                            (click)="addHobby()"
+                            [disabled]="hobbiesForm.hasError('maxlength')"
+                    >
+                        <mat-icon>add_box</mat-icon>
+                    </button>
+                </div>
+                    @if(hobbiesForm.hasError('maxlength')) {
+                        <mat-error>Limited hobbies</mat-error>
+                    }
+
+                @for (hobbyCtrl of hobbiesForm.controls; track $index) {
+                    <mat-form-field class="w-full">
+                        <mat-label>Hobby {{ $index + 1 }}</mat-label>
+                        <input matInput [formControl]="hobbyCtrl"/>
+                        @if ($index) {
+                            <button
+                                    mat-icon-button
+                                    matSuffix
+                                    color="warn"
+                                    aria-label="Remove item"
+                                    type="button"
+                                    (click)="removeHobby($index)"
+                            >
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        }
+                    </mat-form-field>
+                }
+            </div>
+            <mat-divider class="py-2.5 m-0"></mat-divider>
             <mat-form-field class="col-span-12">
                 <mat-label>Website</mat-label>
                 <input matInput formControlName="website"/>
@@ -148,10 +190,9 @@
             </mat-form-field>
             <mat-form-field class="col-span-12">
                 <mat-label>Birth Date</mat-label>
-                <input matInput formControlName="birthDate"/>
-                @if (optionalForm.controls.birthDate.hasError('required')) {
-                    <mat-error>Date is required</mat-error>
-                }
+                <input matInput [max]="today | date" [matDatepicker]="picker" placeholder="Ex. MM/DD/YYYY" formControlName="birthDate" />
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
             <mat-form-field class="col-span-12">
                 <mat-label>Gender</mat-label>

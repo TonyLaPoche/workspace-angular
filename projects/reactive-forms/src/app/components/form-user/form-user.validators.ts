@@ -1,4 +1,14 @@
-import {AbstractControl, FormGroup, ValidationErrors, ValidatorFn} from "@angular/forms";
+import {AbstractControl, FormGroup, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn} from "@angular/forms";
+import {ErrorStateMatcher} from "@angular/material/core";
+
+export class PasswordStateMatcher implements ErrorStateMatcher {
+    isErrorState(control: AbstractControl | null, form: FormGroupDirective | NgForm | null): boolean {
+        const password = form?.control.get('user')?.get('password')
+        const passwordConfirm = form?.control.get('user')?.get('passwordConfirm')
+
+        return (control?.errors || form?.control.get('user')?.errors?.['passwordMismatch']) && (password?.touched && passwordConfirm?.touched)  ;
+    }
+}
 
 export const passwordMatchValidator: ValidatorFn = (group: AbstractControl<FormGroup>): ValidationErrors | null => {
     const password = group.get('password');
@@ -8,16 +18,3 @@ export const passwordMatchValidator: ValidatorFn = (group: AbstractControl<FormG
     }
     return null;
 };
-
-export const matchValidator = (matchTo: string, reverse?: boolean): ValidatorFn => {
-    return (control: AbstractControl): ValidationErrors | null => {
-        if (control.parent && reverse) {
-            const c = (control.parent?.controls as any)[matchTo] as AbstractControl;
-            if (c) {
-                c.updateValueAndValidity();
-            }
-            return null;
-        }
-        return !!control.parent && !!control.parent.value && control.value === (control.parent?.controls as any)[matchTo].value ? null : {matching: true}
-    }
-}

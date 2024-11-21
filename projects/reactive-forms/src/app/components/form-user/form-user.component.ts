@@ -1,12 +1,19 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {MatError, MatFormField, MatHint, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {matchValidator} from "./form-user.validators";
-import {JsonPipe} from "@angular/common";
-import {MatButton} from "@angular/material/button";
+import {AsyncPipe, DatePipe, JsonPipe} from "@angular/common";
+import {MatButton, MatFabButton, MatIconButton, MatMiniFabButton} from "@angular/material/button";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {MatOption, MatSelect} from "@angular/material/select";
+import {MatListOption, MatSelectionList} from "@angular/material/list";
+import {MatIcon} from "@angular/material/icon";
+import {MatDivider} from "@angular/material/divider";
+import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
+import {FormUserService} from "./form-user.service";
+import {passwordMatchValidator, PasswordStateMatcher} from "./form-user.validators";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+
 
 @Component({
     selector: 'app-form-user',
@@ -22,12 +29,29 @@ import {MatOption, MatSelect} from "@angular/material/select";
         MatCheckbox,
         MatSelect,
         MatOption,
+        MatListOption,
+        MatSelectionList,
+        FormsModule,
+        MatSuffix,
+        MatIconButton,
+        MatIcon,
+        MatFabButton,
+        MatDivider,
+        MatMiniFabButton,
+        MatHint,
+        DatePipe,
+        MatDatepickerInput,
+        MatDatepicker,
+        MatDatepickerToggle,
+        AsyncPipe,
     ],
     templateUrl: 'form-user.component.html',
     styles: ``,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormUser {
+
+    formUserService = inject(FormUserService);
 
 
     registerForm = new FormGroup(
@@ -38,9 +62,9 @@ export class FormUser {
                 email: new FormControl('', [Validators.required, Validators.email]),
                 age: new FormControl('', [Validators.required, Validators.min(18), Validators.maxLength(100)]),
                 phoneNumber: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
-                password: new FormControl('', [Validators.required, Validators.minLength(8), matchValidator('passwordConfirm', true)]),
-                passwordConfirm: new FormControl('', [Validators.required, matchValidator('password')]),
-            }),
+                password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+                passwordConfirm: new FormControl('', [Validators.required]),
+            }, [passwordMatchValidator]),
             address: new FormGroup({
                 street: new FormControl('', [Validators.required]),
                 city: new FormControl('', [Validators.required]),
@@ -50,23 +74,49 @@ export class FormUser {
                 newsletterSub: new FormControl(''),
                 newsletterFrequency: new FormControl('', Validators.required),
                 website: new FormControl('', Validators.pattern('https?://.+')),
-                birthDate: new FormControl('', Validators.required),
+                birthDate: new FormControl('', Validators.required, [this.formUserService.checkBirthDateValidity]),
                 gender: new FormControl('', Validators.required),
-                commentary: new FormControl('')
+                commentary: new FormControl(''),
+                hobbiesItems: new FormArray<FormControl>([
+                    new FormControl('', [Validators.minLength(3)])
+                ], [Validators.maxLength(4)])
             }),
-            hobbies: new FormArray([
-                new FormControl('hobby')
-            ])
-
         }
     );
 
     userForm = this.registerForm.controls.user;
     addressForm = this.registerForm.controls.address;
     optionalForm = this.registerForm.controls.optional;
-    hobbiesForm = this.registerForm.controls.hobbies;
+    hobbiesForm = this.optionalForm.controls.hobbiesItems;
+    today = new Date().getDate()
+    passwordStateMatcher = new PasswordStateMatcher();
+
+    constructor() {
+        this.optionalForm.controls.newsletterSub.valueChanges.pipe(
+            takeUntilDestroyed()
+        ).subscribe(
+            isSub => {
+                this.optionalForm.controls.newsletterFrequency.reset()
+            }
+        )
+    }
+
+    createHobbyCtrl(value = '') {
+        return new FormControl(value, [Validators.required, Validators.minLength(3)])
+    }
+
+    addHobby() {
+        const b = this.hobbiesForm.hasError('maxlength');
+        if (!b) {
+            this.hobbiesForm.push(this.createHobbyCtrl())
+        }
+    }
+
+    removeHobby(index: number) {
+        this.hobbiesForm.removeAt(index);
+    }
 
     submitAuth() {
-        console.info(this.registerForm.value)
+        console.info(this.registerForm.getRawValue())
     }
 }
