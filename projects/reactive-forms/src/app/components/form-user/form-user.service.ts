@@ -40,11 +40,7 @@ export class FormUserService {
       return of({ birthDate: 'Birth date invalid' }).pipe(
           take(1),
           delay(1000)
-
       )
     }
   }
-
-
-
 }
