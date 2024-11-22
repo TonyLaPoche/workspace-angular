@@ -1,0 +1,245 @@
+<form [formGroup]="registerForm" autocomplete="off" (ngSubmit)="submitRegisterForm()"
+      class="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
+    <div class="flex justify-center items-center mb-4">
+        <hr class="w-1/2 mx-auto">
+        <h2 class="px-2.5 text-lg">User</h2>
+        <hr class="w-1/2 mx-auto">
+    </div>
+    <div formGroupName="user">
+        <div class="row flex flex-col">
+            <mat-form-field class="col-span-12">
+                <mat-label>Name</mat-label>
+                <input matInput placeholder="Name" name="name" id="name" formControlName="name"/>
+                @if (userForm.controls.name.hasError('required')) {
+                    <mat-error>Name is required</mat-error>
+                }
+                @if (userForm.controls.name.getError('minlength') || userForm.controls.name.getError('maxlength'); as lengthError; ) {
+                    <mat-error>The name require min 2 characters and max 50 actual : {{ lengthError.actualLength }}
+                    </mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field class="col-span-12">
+                <mat-label>Last name</mat-label>
+                <input matInput placeholder="lastName" name="lastname" id="lastname" formControlName="lastName"/>
+                @if (userForm.controls.lastName.hasError('required')) {
+                    <mat-error>Last name is required</mat-error>
+                }
+                @if (userForm.controls.lastName.getError('minlength') || userForm.controls.lastName.hasError('maxlength'); as lengthError; ) {
+                    <mat-error>The last name require min 2 characters and max 50 actual
+                        : {{ lengthError.actualLength }}
+                    </mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field class="col-span-12">
+                <mat-label>Email</mat-label>
+                <input matInput
+                       placeholder="Ex. adresse@email.com"
+                       name="email"
+                       id="email"
+                       formControlName="email"
+                />
+                @if (userForm.controls.email.hasError('required')) {
+                    <mat-error>Email is required</mat-error>
+                }
+                @if (userForm.controls.email.hasError('email')) {
+                    <mat-error>Email valid is required</mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field class="col-span-12">
+                <mat-label>Age</mat-label>
+                <input matInput placeholder="age" name="age" id="age" formControlName="age"/>
+                @if (userForm.controls.age.hasError('required')) {
+                    <mat-error>Age is required</mat-error>
+                }
+                @if (userForm.controls.age.hasError('pattern')) {
+                    <mat-error>Only number are authorized</mat-error>
+                }
+                @if (userForm.controls.age.hasError('min') || userForm.controls.age.hasError('max')) {
+                    <mat-error>Age must be between 18 and 100 years old</mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field class="col-span-12">
+                <mat-label>Phone number</mat-label>
+                <input matInput placeholder="phoneNumber" name="phonenumber" id="phonenumber"
+                       formControlName="phoneNumber"/>
+                @if (userForm.controls.phoneNumber.hasError('required')) {
+                    <mat-error>Phone Number is required</mat-error>
+                }
+                @if (userForm.controls.phoneNumber.hasError('pattern')) {
+                    <mat-error>Phone Number must be contains exactly 10 numbers</mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field class="col-span-12">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" placeholder="password" autocomplete="off"
+                       formControlName="password" [errorStateMatcher]="passwordStateMatcher"/>
+                @if (userForm.controls.password.hasError('required')) {
+                    <mat-error>password is required</mat-error>
+                }
+                @if (userForm.controls.password.getError('minlength'); as minlengthError) {
+                    <mat-error>password must have {{ minlengthError.requiredLength }} character minimum</mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field class="col-span-12">
+                <mat-label>Repeat password</mat-label>
+                <input matInput type="password" placeholder="Password" autocomplete="off"
+                       formControlName="passwordConfirm" [errorStateMatcher]="passwordStateMatcher"/>
+                @if (userForm.controls.passwordConfirm.hasError('required')) {
+                    <mat-error>Repeated password is required and must match</mat-error>
+                }
+                @if (userForm.hasError('passwordMismatch')) {
+                    <mat-error>Password must match</mat-error>
+                }
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="flex justify-center items-center mb-4">
+        <hr class="w-1/2 mx-auto">
+        <h2 class="px-2.5 text-lg">Address</h2>
+        <hr class="w-1/2 mx-auto">
+    </div>
+    <div formGroupName="address">
+        <div class="row flex flex-col">
+            <mat-form-field class="col-span-12">
+                <mat-label>Street</mat-label>
+                <input matInput placeholder="street" formControlName="street"/>
+                @if (addressForm.controls.street.hasError('required')) {
+                    <mat-error>Street is required</mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field class="col-span-12">
+                <mat-label>City</mat-label>
+                <input matInput placeholder="city" formControlName="city"/>
+                @if (addressForm.controls.city.hasError('required')) {
+                    <mat-error>City is required</mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field class="col-span-12">
+                <mat-label>ZipCode</mat-label>
+                <input matInput placeholder="zipCode" formControlName="zipcode"/>
+                @if (addressForm.controls.zipcode.hasError('required')) {
+                    <mat-error>Zipcode is required</mat-error>
+                }
+                @if (addressForm.controls.zipcode.hasError('pattern')) {
+                    <mat-error>Zipcode valid is required</mat-error>
+                }
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="flex justify-center items-center mb-4">
+        <hr class="w-1/2 mx-auto">
+        <h2 class="px-2.5 text-lg">Preference</h2>
+        <hr class="w-1/2 mx-auto">
+    </div>
+    <div formGroupName="optional">
+        <div class="row flex flex-col">
+            <div class="col-span-12">
+                <h4>Newsletter subscription</h4>
+                <mat-checkbox formControlName="newsletterSub">Let me subscribe !</mat-checkbox>
+            </div>
+            @if (optionalForm.controls.newsletterSub.value) {
+                <mat-form-field class="col-span-12">
+                    <mat-label>Newsletter frequency</mat-label>
+                    <mat-select formControlName="newsletterFrequency">
+                        <mat-option value="daily">daily</mat-option>
+                        <mat-option value="weekly">weekly</mat-option>
+                        <mat-option value="monthly">monthly</mat-option>
+                    </mat-select>
+                    @if (optionalForm.get('newsletterFrequency')?.touched && optionalForm.controls.newsletterFrequency.hasError('required')) {
+                        <mat-error>You need to choose frequency to subscribe</mat-error>
+                    }
+                </mat-form-field>
+            }
+
+            <div formArrayName="hobbiesItems">
+                <div class="w-full flex justify-between items-center pb-2.5">
+                    <h4 class="text-lg">Hobbies</h4>
+                    <button
+                            mat-icon-button
+                            color="primary"
+                            aria-label="Add item"
+                            type="button"
+                            (click)="addHobby()"
+                            [disabled]="hobbiesForm.hasError('maxlength')"
+                    >
+                        <mat-icon>add_box</mat-icon>
+                    </button>
+                </div>
+                @if (hobbiesForm.hasError('maxlength')) {
+                    <mat-error>Limited hobbies</mat-error>
+                }
+
+                @for (hobbyCtrl of hobbiesForm.controls; track $index) {
+                    <mat-form-field class="w-full">
+                        <mat-label>Hobby {{ $index + 1 }}</mat-label>
+                        <input matInput [formControl]="hobbyCtrl"/>
+                        @if (!$first) {
+                            <button
+                                    mat-icon-button
+                                    matSuffix
+                                    color="warn"
+                                    aria-label="Remove item"
+                                    type="button"
+                                    (click)="removeHobby($index)"
+                            >
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        }
+
+                        @if (hobbyCtrl.hasError('minlength')) {
+                            <mat-error>The hobby name require min 3 characters</mat-error>
+                        }
+
+                    </mat-form-field>
+                }
+            </div>
+            <mat-divider class="py-2.5 m-0"></mat-divider>
+            <mat-form-field class="col-span-12">
+                <mat-label>Website</mat-label>
+                <input matInput formControlName="website"/>
+                @if (optionalForm.controls.website.hasError('pattern')) {
+                    <mat-error>Url valid is required</mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field class="col-span-12">
+                <mat-label>Birth Date</mat-label>
+                <input matInput [matDatepicker]="picker" placeholder="Ex. MM/DD/YYYY"
+                       formControlName="birthDate"/>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                @if (optionalForm.controls.birthDate.hasError('required')) {
+                    <mat-error>Birthdate valid is required</mat-error>
+                }
+                @if (optionalForm.controls.birthDate.getError('birthDate'); as birthDateError) {
+                    <mat-error>{{ birthDateError }}</mat-error>
+                }
+            </mat-form-field>
+            <div class="flex flex-col col-span-12">
+                <label id="gender" for="gender">Gender*</label>
+                <mat-radio-group name="gender" aria-labelledby="gender" formControlName="gender">
+                    <mat-radio-button value="Men">Men</mat-radio-button>
+                    <mat-radio-button value="Women">Women</mat-radio-button>
+                    <mat-radio-button value="Other">Other</mat-radio-button>
+                </mat-radio-group>
+                @if (optionalForm.get('gender')?.touched) {
+                    <mat-error>Gender is required</mat-error>
+                }
+            </div>
+            <mat-divider class="py-2.5 m-0"></mat-divider>
+            <mat-form-field class="col-span-12">
+                <mat-label>Leave a comment</mat-label>
+                <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+            </mat-form-field>
+        </div>
+
+    </div>
+    <div>
+        <button
+                mat-flat-button
+                type="submit"
+                class="w-full"
+        >
+            Submit
+        </button>
+    </div>
+</form>

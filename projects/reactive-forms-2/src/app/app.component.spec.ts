@@ -1,5 +1,5 @@
-import {TestBed} from '@angular/core/testing';
-import {AppComponent} from './app.component';
+import { TestBed } from '@angular/core/testing';
+import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'template-driven-form' title`, () => {
+  it(`should have the 'reactive-forms-2' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('template-driven-form');
+    expect(app.title).toEqual('reactive-forms-2');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, template-driven-form');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, reactive-forms-2');
   });
 });

@@ -78,4 +78,8 @@ Si tu veux contribuer à ce dépôt, n'hésite pas à soumettre des **pull reque
 
 Ce projet est sous licence MIT. Consulte le fichier LICENSE pour plus de détails.
 
+## Wakatime
 
+[![wakatime](https://wakatime.com/badge/user/9d5ca4bc-3c1b-4b73-948c-329a6e87bf24/project/55dcdfd8-2c94-4094-be40-0d68758e4bd9.svg)](https://wakatime.com/badge/user/9d5ca4bc-3c1b-4b73-948c-329a6e87bf24/project/55dcdfd8-2c94-4094-be40-0d68758e4bd9)
+
+[Angular Practice statistique](https://wakatime.com/@TonyLaPoche/projects/pnrcqqicei?start=2024-11-13&end=2024-11-19)
