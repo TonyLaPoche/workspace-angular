@@ -13,18 +13,21 @@
                 @if (userForm.controls.name.hasError('required')) {
                     <mat-error>Name is required</mat-error>
                 }
-                @if (userForm.controls.name.hasError('minlength') || userForm.controls.name.hasError('maxlength')) {
-                    <mat-error>The name require min 2 characters and max 50</mat-error>
+                @if (userForm.controls.name.getError('minlength') || userForm.controls.name.getError('maxlength'); as lengthError; ) {
+                    <mat-error>The name require min 2 characters and max 50 actual : {{ lengthError.actualLength }}
+                    </mat-error>
                 }
             </mat-form-field>
             <mat-form-field class="col-span-12">
                 <mat-label>Last name</mat-label>
                 <input matInput placeholder="lastName" name="lastname" id="lastname" formControlName="lastName"/>
                 @if (userForm.controls.lastName.hasError('required')) {
-                    <mat-error>Name is required</mat-error>
+                    <mat-error>Last name is required</mat-error>
                 }
-                @if (userForm.controls.lastName.hasError('minlength') || userForm.controls.lastName.hasError('maxlength')) {
-                    <mat-error>The name require min 2 characters and max 50</mat-error>
+                @if (userForm.controls.lastName.getError('minlength') || userForm.controls.lastName.hasError('maxlength'); as lengthError; ) {
+                    <mat-error>The last name require min 2 characters and max 50 actual
+                        : {{ lengthError.actualLength }}
+                    </mat-error>
                 }
             </mat-form-field>
             <mat-form-field class="col-span-12">
@@ -38,7 +41,7 @@
                 @if (userForm.controls.email.hasError('required')) {
                     <mat-error>Email is required</mat-error>
                 }
-                @if (userForm.controls.email.hasError('valid')) {
+                @if (userForm.controls.email.hasError('email')) {
                     <mat-error>Email valid is required</mat-error>
                 }
             </mat-form-field>
@@ -48,6 +51,9 @@
                 @if (userForm.controls.age.hasError('required')) {
                     <mat-error>Age is required</mat-error>
                 }
+                @if (userForm.controls.age.hasError('pattern')) {
+                    <mat-error>Only number are authorized</mat-error>
+                }
                 @if (userForm.controls.age.hasError('min') || userForm.controls.age.hasError('max')) {
                     <mat-error>Age must be between 18 and 100 years old</mat-error>
                 }
@@ -56,6 +62,9 @@
                 <mat-label>Phone number</mat-label>
                 <input matInput placeholder="phoneNumber" name="phonenumber" id="phonenumber"
                        formControlName="phoneNumber"/>
+                @if (userForm.controls.phoneNumber.hasError('required')) {
+                    <mat-error>Phone Number is required</mat-error>
+                }
                 @if (userForm.controls.phoneNumber.hasError('pattern')) {
                     <mat-error>Phone Number must be contains exactly 10 numbers</mat-error>
                 }
@@ -74,7 +83,7 @@
             <mat-form-field class="col-span-12">
                 <mat-label>Repeat password</mat-label>
                 <input matInput type="password" placeholder="Password" autocomplete="off"
-                       formControlName="passwordConfirm" [errorStateMatcher]="passwordStateMatcher" />
+                       formControlName="passwordConfirm" [errorStateMatcher]="passwordStateMatcher"/>
                 @if (userForm.controls.passwordConfirm.hasError('required')) {
                     <mat-error>Repeated password is required and must match</mat-error>
                 }
@@ -136,7 +145,7 @@
                         <mat-option value="weekly">weekly</mat-option>
                         <mat-option value="monthly">monthly</mat-option>
                     </mat-select>
-                    @if (optionalForm.controls.newsletterFrequency.hasError('required')) {
+                    @if (optionalForm.get('newsletterFrequency')?.touched && optionalForm.controls.newsletterFrequency.hasError('required')) {
                         <mat-error>You need to choose frequency to subscribe</mat-error>
                     }
                 </mat-form-field>
@@ -156,9 +165,9 @@
                         <mat-icon>add_box</mat-icon>
                     </button>
                 </div>
-                    @if(hobbiesForm.hasError('maxlength')) {
-                        <mat-error>Limited hobbies</mat-error>
-                    }
+                @if (hobbiesForm.hasError('maxlength')) {
+                    <mat-error>Limited hobbies</mat-error>
+                }
 
                 @for (hobbyCtrl of hobbiesForm.controls; track $index) {
                     <mat-form-field class="w-full">
@@ -176,6 +185,12 @@
                                 <mat-icon>delete</mat-icon>
                             </button>
                         }
+                        @if (hobbyCtrl.hasError('minlength')) {
+                            <mat-error>The hobby name require min 3 characters</mat-error>
+                        }
+                        @if ($index > 0 && hobbyCtrl.hasError('required')) {
+                            <mat-error>You can't send empty or not valid hobby</mat-error>
+                        }
                     </mat-form-field>
                 }
             </div>
@@ -189,24 +204,29 @@
             </mat-form-field>
             <mat-form-field class="col-span-12">
                 <mat-label>Birth Date</mat-label>
-                <input matInput [max]="today | date" [matDatepicker]="picker" placeholder="Ex. MM/DD/YYYY" formControlName="birthDate" />
-                <mat-datepicker-toggle  matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker  #picker></mat-datepicker>
-                @if(optionalForm.controls.birthDate.getError('birthDate'); as birthDateError) {
-                <mat-error>{{ birthDateError }}</mat-error>
+                <input matInput [max]="today | date" [matDatepicker]="picker" placeholder="Ex. MM/DD/YYYY"
+                       formControlName="birthDate"/>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                @if (optionalForm.controls.birthDate.hasError('required')) {
+                    <mat-error>Birthdate valid is required</mat-error>
+                }
+                @if (optionalForm.controls.birthDate.getError('birthDate'); as birthDateError) {
+                    <mat-error>{{ birthDateError }}</mat-error>
                 }
             </mat-form-field>
-            <mat-form-field class="col-span-12">
-                <mat-label>Gender</mat-label>
-                <mat-select formControlName="gender">
-                    <mat-option>Men</mat-option>
-                    <mat-option>Women</mat-option>
-                    <mat-option>Other</mat-option>
-                </mat-select>
-                @if (optionalForm.controls.gender.hasError('required')) {
+            <div class="flex flex-col col-span-12">
+                <label id="gender" for="gender">Gender*</label>
+                <mat-radio-group name="gender" aria-labelledby="gender" formControlName="gender">
+                    <mat-radio-button value="Men">Men</mat-radio-button>
+                    <mat-radio-button value="Women">Women</mat-radio-button>
+                    <mat-radio-button value="Other">Other</mat-radio-button>
+                </mat-radio-group>
+                @if (optionalForm.get('gender')?.touched) {
                     <mat-error>Gender is required</mat-error>
                 }
-            </mat-form-field>
+            </div>
+            <mat-divider class="py-2.5 m-0"></mat-divider>
             <mat-form-field class="col-span-12">
                 <mat-label>Leave a comment</mat-label>
                 <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
@@ -220,7 +240,7 @@
                 type="submit"
                 class="w-full"
         >
-            Send
+            Submit
         </button>
     </div>
 </form>
