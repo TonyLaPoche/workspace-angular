@@ -1,4 +1,4 @@
-<form [formGroup]="registerForm" autocomplete="off" (ngSubmit)="submitAuth()"
+<form [formGroup]="registerForm" autocomplete="off" (ngSubmit)="submitRegisterForm()"
       class="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
     <div class="flex justify-center items-center mb-4">
         <hr class="w-1/2 mx-auto">
@@ -173,7 +173,7 @@
                     <mat-form-field class="w-full">
                         <mat-label>Hobby {{ $index + 1 }}</mat-label>
                         <input matInput [formControl]="hobbyCtrl"/>
-                        @if ($index) {
+                        @if (!$first) {
                             <button
                                     mat-icon-button
                                     matSuffix
@@ -185,12 +185,11 @@
                                 <mat-icon>delete</mat-icon>
                             </button>
                         }
+
                         @if (hobbyCtrl.hasError('minlength')) {
                             <mat-error>The hobby name require min 3 characters</mat-error>
                         }
-                        @if ($index > 0 && hobbyCtrl.hasError('required')) {
-                            <mat-error>You can't send empty or not valid hobby</mat-error>
-                        }
+
                     </mat-form-field>
                 }
             </div>
@@ -204,7 +203,7 @@
             </mat-form-field>
             <mat-form-field class="col-span-12">
                 <mat-label>Birth Date</mat-label>
-                <input matInput [max]="today | date" [matDatepicker]="picker" placeholder="Ex. MM/DD/YYYY"
+                <input matInput [matDatepicker]="picker" placeholder="Ex. MM/DD/YYYY"
                        formControlName="birthDate"/>
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>

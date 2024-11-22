@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FormUserService } from './form-user.service';
+import { FormUserService } from './model/user-form';
 
 describe('FormUserService', () => {
   let service: FormUserService;
