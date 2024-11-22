@@ -13,6 +13,7 @@ import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/m
 import {FormUserService} from "./form-user.service";
 import {passwordMatchValidator, PasswordStateMatcher} from "./form-user.validators";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 
 
 @Component({
@@ -44,6 +45,8 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
         MatDatepicker,
         MatDatepickerToggle,
         AsyncPipe,
+        MatRadioGroup,
+        MatRadioButton,
     ],
     templateUrl: 'form-user.component.html',
     styles: ``,
@@ -60,7 +63,7 @@ export class FormUser {
                 name: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
                 lastName: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
                 email: new FormControl('', [Validators.required, Validators.email]),
-                age: new FormControl('', [Validators.required, Validators.min(18), Validators.maxLength(100)]),
+                age: new FormControl('', [Validators.required, Validators.min(18), Validators.maxLength(100), Validators.pattern('[0-9]')]),
                 phoneNumber: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
                 password: new FormControl('', [Validators.required, Validators.minLength(8)]),
                 passwordConfirm: new FormControl('', [Validators.required]),
@@ -117,6 +120,9 @@ export class FormUser {
     }
 
     submitAuth() {
-        console.info(this.registerForm.getRawValue())
+        this.registerForm.markAllAsTouched();
+        if (this.registerForm.valid) {
+            console.info(this.registerForm.getRawValue())
+        }
     }
 }
