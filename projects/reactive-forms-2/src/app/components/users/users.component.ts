@@ -27,7 +27,6 @@ interface QueryParams {
 
 @Component({
     selector: 'app-users',
-    standalone: true,
     imports: [
         MatTable,
         MatColumnDef,

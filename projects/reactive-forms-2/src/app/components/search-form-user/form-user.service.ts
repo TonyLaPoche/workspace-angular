@@ -5,18 +5,18 @@ import {UserForm} from "./model/search-form-user.model";
 import {Params} from "@angular/router";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class FormUserService {
-  http = inject(HttpClient)
+    http = inject(HttpClient)
 
-  Users$ = new BehaviorSubject('')
+    Users$ = new BehaviorSubject('')
 
-  getMockUsers(): Observable<UserForm[]> {
-    return this.http.get<UserForm[]>('mock-user')
-  }
+    getMockUsers(): Observable<UserForm[]> {
+        return this.http.get<UserForm[]>('mock-user')
+    }
 
-  getMockUsersWithParams(paramsValue: Params): Observable<UserForm[]> {
-    return this.http.get<UserForm[]>('mock-user', {params: paramsValue} )
-  }
+    getMockUsersWithParams(paramsValue: Params): Observable<UserForm[]> {
+        return this.http.get<UserForm[]>('mock-user', {params: paramsValue})
+    }
 }

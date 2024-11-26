@@ -6,7 +6,6 @@ import {BehaviorSubject} from "rxjs";
 
 @Component({
     selector: 'app-root',
-    standalone: true,
     imports: [AsyncPipe, SearchFormUserComponent, UsersComponent],
     template: `
         <h1 class=" text-2xl text-red-800">

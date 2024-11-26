@@ -3,7 +3,6 @@ import {FormUser} from "./components/form-user/form-user.component";
 
 @Component({
     selector: 'app-root',
-    standalone: true,
     imports: [FormUser],
     template: `
         <h1 class="text-2xl text-center">Reactive Forms</h1>

@@ -12,7 +12,6 @@ import {FormUserService} from "./form-user.service";
 
 @Component({
     selector: 'app-search-form-user',
-    standalone: true,
     imports: [
         ReactiveFormsModule,
         MatFormField,

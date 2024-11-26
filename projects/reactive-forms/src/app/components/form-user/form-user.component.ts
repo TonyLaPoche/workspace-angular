@@ -18,7 +18,6 @@ import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 
 @Component({
     selector: 'app-form-user',
-    standalone: true,
     imports: [
         ReactiveFormsModule,
         MatFormField,
