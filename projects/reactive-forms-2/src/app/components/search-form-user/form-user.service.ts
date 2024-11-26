@@ -16,7 +16,7 @@ export class FormUserService {
         return this.http.get<UserForm[]>('mock-user')
     }
 
-    getMockUsersWithParams(paramsValue: Params): Observable<UserForm[]> {
-        return this.http.get<UserForm[]>('mock-user', {params: paramsValue})
+    getMockUsersWithParams(params: Params): Observable<UserForm[]> {
+        return this.http.get<UserForm[]>('mock-user', {params})
     }
 }

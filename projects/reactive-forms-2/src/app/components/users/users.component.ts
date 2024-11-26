@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, effect, inject, input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Directive, inject, output} from '@angular/core';
 import {
     MatCell,
     MatCellDef,
@@ -12,18 +12,16 @@ import {
     MatRowDef,
     MatTable
 } from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort, MatSortHeader} from "@angular/material/sort";
-import {ActivatedRoute, Params} from "@angular/router";
-import {map, switchMap, tap} from "rxjs";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
+import {MatSort, MatSortHeader, Sort, SortDirection} from "@angular/material/sort";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {FormUserService} from "../search-form-user/form-user.service";
 import {AsyncPipe, JsonPipe} from "@angular/common";
-
-interface QueryParams {
-    name: string | undefined
-    age: string | undefined
-    cities: string[] | undefined
-}
+import {rxResource, toSignal} from "@angular/core/rxjs-interop";
+import {UserForm} from "../search-form-user/model/search-form-user.model";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
+import {MatSortHarness} from "@angular/material/sort/testing";
 
 @Component({
     selector: 'app-users',
@@ -43,7 +41,8 @@ interface QueryParams {
         MatSort,
         MatSortHeader,
         AsyncPipe,
-        JsonPipe
+        JsonPipe,
+        MatProgressSpinner,
     ],
     templateUrl: './users.component.html',
     styles: ``,
@@ -51,29 +50,28 @@ interface QueryParams {
 })
 export class UsersComponent {
 
-    route = inject(ActivatedRoute)
-    formUSerServices = inject(FormUserService)
+    route = inject(ActivatedRoute);
+    router = inject(Router);
+    formUserService = inject(FormUserService)
+    params = toSignal(this.route.queryParams, {initialValue: {}})
+    displayedColumns = ["name", "age", "city", "email", "subscribe"];
 
-    search = input<string>('')
-    age = input<string>('')
-    cities = input<string[]>([])
 
-    // users$ = this.route.queryParams.pipe(
-    //     map((params) => this.paramsToFilter(params)),
-    //     tap(filtered => console.info(filtered))
-    // );
+    users = rxResource<UserForm[] | undefined, Params>({
+        request: () => this.params(),
+        loader: ({request: params}) => {
+            return this.formUserService.getMockUsersWithParams(params)
+        }
+    })
 
-    constructor() {
-        effect(() => {
-            console.log(this.cities())
-        });
-    }
 
-    paramsToFilter(params: Params) {
-        return {
-            name: params['search'],
-            age: params['age'],
-            cities: params['cities']
+    sortAndPaginationEvent(filter?: PageEvent | Sort) {
+       if (filter instanceof PageEvent) {
+           this.router.navigate(['.'], { queryParams: { pageIndex: filter.pageIndex }, queryParamsHandling: 'merge'});
+        } else {
+           console.log(filter)
+           this.router.navigate(['.'], { queryParams: { column: filter?.active, sort: filter?.direction }, queryParamsHandling: 'merge'});
         }
     }
+
 }

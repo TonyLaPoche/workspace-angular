@@ -7,6 +7,20 @@
     "subscribe": "2022-01-12"
   },
   {
+    "name": "Johnathan Smith",
+    "age": 29,
+    "city": "Paris",
+    "email": "johna.smith@example.com",
+    "subscribe": "2022-01-14"
+  },
+  {
+    "name": "Johna Smith",
+    "age": 40,
+    "city": "Lyon",
+    "email": "johna.smith@example.com",
+    "subscribe": "2022-08-14"
+  },
+  {
     "name": "Marie Curie",
     "age": 35,
     "city": "Lyon",
@@ -14,9 +28,9 @@
     "subscribe": "2021-03-03"
   },
   {
-    "name": "Emily Johnson",
+    "name": "Mily Johnson",
     "age": 30,
-    "city": "London",
+    "city": "Bordeaux",
     "email": "emily.johnson@example.com",
     "subscribe": "2022-06-15"
   },

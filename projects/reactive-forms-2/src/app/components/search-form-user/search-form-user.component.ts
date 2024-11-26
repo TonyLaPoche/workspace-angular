@@ -94,7 +94,7 @@ export class SearchFormUserComponent implements OnInit {
             const search = params.get('search') ?? '';
             const minAge = params.get('minAge') ?? '18';
             const maxAge = params.get('maxAge') ?? '100';
-            const cities = params.get('cities')?.split(',') || [];
+            const cities = params.getAll('cities');
 
             this.userForm.patchValue({
                 name: search,
@@ -102,9 +102,8 @@ export class SearchFormUserComponent implements OnInit {
                     min: parseInt(minAge),
                     max: parseInt(maxAge)
                 },
-                cities: cities
+                cities
             });
-        console.log(params)
         });
     }
 
