@@ -66,7 +66,6 @@ import {FormUserService} from "./form-user.service";
                 </section>
             </div>
         </form>
-
     `,
     styles: `
       :host {
@@ -80,7 +79,37 @@ export class SearchFormUserComponent implements OnInit {
     /** Sub Form Getter of userForm */
     readonly ageForm = this.userForm.controls.age;
 
-    citiesDefault = ["Paris", "Lyon", "Bordeaux"];
+    citiesDefault = [
+        "Paris",
+        "Lyon",
+        "Bordeaux",
+        "New York",
+        "Berlin",
+        "Toronto",
+        "Madrid",
+        "Los Angeles",
+        "Sydney",
+        "Dublin",
+        "Rome",
+        "Vienna",
+        "Tokyo",
+        "Seoul",
+        "Cape Town",
+        "Amsterdam",
+        "Brussels",
+        "Singapore",
+        "Hong Kong",
+        "Dubai",
+        "Zurich",
+        "Oslo",
+        "Helsinki",
+        "Stockholm",
+        "Lisbon",
+        "Prague",
+        "Warsaw",
+        "Budapest",
+        "Copenhagen",
+        "Reykjavik"];
 
     formOutput = output<any>()
     paramsInput = input<string>('');
@@ -112,6 +141,7 @@ export class SearchFormUserComponent implements OnInit {
     }
 
     submitForm(): void {
+        this.userForm.markAllAsTouched()
         const formValues = this.userForm.getRawValue();
 
         const queryParams = {
@@ -121,9 +151,11 @@ export class SearchFormUserComponent implements OnInit {
             cities: formValues.cities
         };
 
-        this.router.navigate(['.'], {
-            queryParams,
-            queryParamsHandling: 'merge'
-        });
+        if (this.userForm.valid) {
+            this.router.navigate(['.'], {
+                queryParams,
+                queryParamsHandling: 'merge'
+            });
+        }
     }
 }

@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject, Observable} from "rxjs";
-import {UserForm} from "./model/search-form-user.model";
+import {Observable} from "rxjs";
+import {HttpResponseUsers} from "./model/search-form-user.model";
 import {Params} from "@angular/router";
 
 @Injectable({
@@ -10,13 +10,7 @@ import {Params} from "@angular/router";
 export class FormUserService {
     http = inject(HttpClient)
 
-    Users$ = new BehaviorSubject('')
-
-    getMockUsers(): Observable<UserForm[]> {
-        return this.http.get<UserForm[]>('mock-user')
-    }
-
-    getMockUsersWithParams(params: Params): Observable<UserForm[]> {
-        return this.http.get<UserForm[]>('mock-user', {params})
+    getMockUsersWithParams(params: Params): Observable<HttpResponseUsers> {
+        return this.http.get<HttpResponseUsers>('mock-user', {params})
     }
 }

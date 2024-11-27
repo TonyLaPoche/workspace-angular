@@ -1,27 +1,23 @@
-import {ChangeDetectionStrategy, Component, Directive, inject, output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {
-    MatCell,
-    MatCellDef,
+    MatCell, MatCellDef,
     MatColumnDef,
-    MatHeaderCell,
-    MatHeaderCellDef,
-    MatHeaderRow,
-    MatHeaderRowDef,
+    MatHeaderCell, MatHeaderCellDef,
+    MatHeaderRow, MatHeaderRowDef,
     MatNoDataRow,
-    MatRow,
-    MatRowDef,
+    MatRow, MatRowDef,
     MatTable
 } from "@angular/material/table";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {MatSort, MatSortHeader, Sort, SortDirection} from "@angular/material/sort";
+import {MatSort, MatSortHeader, Sort} from "@angular/material/sort";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {FormUserService} from "../search-form-user/form-user.service";
-import {AsyncPipe, JsonPipe} from "@angular/common";
-import {rxResource, toSignal} from "@angular/core/rxjs-interop";
-import {UserForm} from "../search-form-user/model/search-form-user.model";
+import {rxResource, toObservable, toSignal} from "@angular/core/rxjs-interop";
+import {HttpResponseUsers, UserForm} from "../search-form-user/model/search-form-user.model";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
-import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
-import {MatSortHarness} from "@angular/material/sort/testing";
+import {NgPlural} from "@angular/common";
+import {of} from "rxjs";
+import {data} from "autoprefixer";
 
 @Component({
     selector: 'app-users',
@@ -30,19 +26,19 @@ import {MatSortHarness} from "@angular/material/sort/testing";
         MatColumnDef,
         MatHeaderCell,
         MatCell,
-        MatHeaderCellDef,
-        MatCellDef,
         MatPaginator,
-        MatHeaderRowDef,
-        MatRowDef,
         MatHeaderRow,
         MatRow,
         MatNoDataRow,
         MatSort,
         MatSortHeader,
-        AsyncPipe,
-        JsonPipe,
         MatProgressSpinner,
+        MatHeaderCellDef,
+        MatCellDef,
+        MatHeaderRowDef,
+        MatRowDef,
+        NgPlural,
+
     ],
     templateUrl: './users.component.html',
     styles: ``,
@@ -57,7 +53,7 @@ export class UsersComponent {
     displayedColumns = ["name", "age", "city", "email", "subscribe"];
 
 
-    users = rxResource<UserForm[] | undefined, Params>({
+    usersHttpsResponse = rxResource<HttpResponseUsers | undefined, Params>({
         request: () => this.params(),
         loader: ({request: params}) => {
             return this.formUserService.getMockUsersWithParams(params)
@@ -65,13 +61,32 @@ export class UsersComponent {
     })
 
 
-    sortAndPaginationEvent(filter?: PageEvent | Sort) {
-       if (filter instanceof PageEvent) {
-           this.router.navigate(['.'], { queryParams: { pageIndex: filter.pageIndex }, queryParamsHandling: 'merge'});
-        } else {
-           console.log(filter)
-           this.router.navigate(['.'], { queryParams: { column: filter?.active, sort: filter?.direction }, queryParamsHandling: 'merge'});
-        }
+    paginationEvent(filter: PageEvent) {
+        this.router.navigate(['.'], {queryParams: filter, queryParamsHandling: 'merge'});
     }
 
+
+    // TODO fixbug
+    sortBy({direction, active}: Sort) {
+        if (this.usersHttpsResponse.hasValue()) {
+            this.usersHttpsResponse.value.update((value) => {
+                const arraySorted = value?.data.sort((a,b) => {
+                    const isAsc = direction === 'asc'
+                    switch (active) {
+                        case 'name' :
+                            return compare(a.name, b.name, isAsc);
+                    }
+                })
+                return { data: arraySorted, pagination: value?.pagination}
+            })
+        }
+
+        function compare(a: number | string, b: number | string, isAsc: boolean) {
+            return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+        }
+
+    }
+
+
+    protected readonly Number = Number;
 }
