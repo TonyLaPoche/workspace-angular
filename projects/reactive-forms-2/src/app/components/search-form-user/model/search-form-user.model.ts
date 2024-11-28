@@ -1,13 +1,31 @@
 export interface HttpResponseUsers {
-    data: UserForm[]
-    pagination: Pagination
+    data: UserForm[],
+    params: Params
 }
 
-export interface Pagination {
-    previousPageIndex: string | null,
-    pageIndex: string | null,
-    pageSize: string | null
-    length: string | null
+export interface ParamsFilters {
+    name: string,
+    maxAge: string,
+    minAge: string,
+    cities: string[],
+}
+
+export interface PaginationParams {
+    previousPageIndex: number | null,
+    pageIndex: number | null,
+    pageSize: number | null,
+    length: number | null,
+}
+
+export interface SortParams {
+    active: string | null,
+    direction: string | null
+}
+
+export interface Params {
+    filters: ParamsFilters | null,
+    pagination: PaginationParams | null,
+    sort: SortParams | null,
 }
 
 export interface UserForm {
@@ -16,11 +34,4 @@ export interface UserForm {
     city: string,
     email: string,
     subscribe: string
-}
-
-export interface UserParams {
-    name: string,
-    minAge: number,
-    maxAge: number,
-    city: string[],
 }

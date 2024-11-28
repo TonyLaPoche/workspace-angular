@@ -17,10 +17,22 @@ export interface PaginationParams {
     length: number | null,
 }
 
-export interface HttpResponseUserFormWithPaginate {
-    data: UserForm[]
-    pagination: PaginationParams
+export interface SortParams {
+    active: string | null,
+    direction: string | null
 }
+
+export interface Params {
+    filters: ParamsFilters,
+    pagination: PaginationParams,
+    sort: SortParams,
+}
+
+export interface HttpResponseUserFormWithParams {
+    data: UserForm[]
+    params: Params
+}
+
 
 export const mockInterceptor: HttpInterceptorFn = (req, next) => {
     if (req.url.includes('mock-user')) {
@@ -31,13 +43,13 @@ export const mockInterceptor: HttpInterceptorFn = (req, next) => {
                 headers: req.headers.set('Content-Type', 'application/json'),
             })
         ).pipe(
-            delay(1500)
+            delay(1000)
         )
     }
     return next(req);
 };
 
-function filterWithParams(params: HttpParams) {
+function filterWithParams(params: HttpParams): HttpResponseUserFormWithParams {
     const mockUsers: UserForm[] = mockData;
 
     const filtersParams: ParamsFilters = {
@@ -55,15 +67,37 @@ function filterWithParams(params: HttpParams) {
         length: Number(params.get('length')),
     }
 
+    const sortParams: SortParams = {
+        active: params.get('active'),
+        direction: params.get('direction')
+    }
+
+    const paramsToShare: Params = {
+        filters: filtersParams,
+        pagination: paginationParams,
+        sort: sortParams,
+    }
+
     const arrayFiltered = filtersParams.name ? arrayFilter(mockUsers, filtersParams) : mockUsers
-    return paginate(paginationParams.pageSize, paginationParams.pageIndex, arrayFiltered)
+    const arraySorted = sortBy(sortParams, arrayFiltered)
+    const {data, pagination} = paginate(paginationParams.pageSize, paginationParams.pageIndex, arraySorted)
+    return {data: data, params: {...paramsToShare, pagination: pagination}}
+}
+
+function sortBy(params: SortParams, array: UserForm[]): UserForm[] {
+    const isAsc = params.direction === 'asc'
+    return array.sort((a, b) => compare(a[params.active as keyof UserForm], b[params.active as keyof UserForm], isAsc))
+}
+
+function compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
 
 function arrayFilter(array: UserForm[], params: ParamsFilters): UserForm[] {
     return array.filter((user) =>
         searchByName(user.name, params.name) &&
         ageValidity(user.age, Number(params.minAge), Number(params.maxAge)) &&
-        (params.cities.length ? params.cities?.includes(user.city) : true )
+        (params.cities.length ? params.cities?.includes(user.city) : true)
     )
 
 }
@@ -82,7 +116,7 @@ function searchByName(fullName: string, search: string): boolean {
     return fullNameRef.includes(searchNameRef);
 }
 
-function paginate(pageSize: number | null, pageIndex: number | null, array: UserForm[]): HttpResponseUserFormWithPaginate {
+function paginate(pageSize: number | null, pageIndex: number | null, array: UserForm[]) {
     const totalItems = array.length;
     const arrayPaginated = array.slice(0, 20)
     if (!pageSize || !pageIndex) {
@@ -97,9 +131,7 @@ function paginate(pageSize: number | null, pageIndex: number | null, array: User
     }
 
     const startIndex = (pageIndex) * pageSize;
-    console.log(startIndex)
     const endIndex = Math.min(startIndex + pageSize, totalItems)
-    console.log(endIndex)
     return {
         data: array.slice(startIndex, endIndex),
         pagination: {

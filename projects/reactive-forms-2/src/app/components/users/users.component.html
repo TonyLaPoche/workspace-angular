@@ -1,63 +1,63 @@
-
 @let users = usersHttpsResponse.value()?.data;
-@let pagination = usersHttpsResponse.value()?.pagination;
-@let length = Number(pagination?.length) ?? 0;
-<!--<div [ngPlural]="length">-->
-<!--    <ng-template ngPluralCase="=0">there is nothing</ng-template>-->
-<!--    <ng-template ngPluralCase="=1">there is one</ng-template>-->
-<!--    <ng-template ngPluralCase="few">there are a few</ng-template>-->
-<!--</div>-->
+@let paramsData = usersHttpsResponse.value()?.params;
+<h2>
+    {{ users?.length | i18nPlural : usersPlural }}
+</h2>
 <div class="mat-elevation-z8 relative">
-    @if(usersHttpsResponse.isLoading()) {
-    <div class="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-[rgba(0,0,0,0.15)]">
-        <mat-spinner [diameter]="24"/>
-    </div>
+    @if (usersHttpsResponse.isLoading()) {
+        <div class="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-[rgba(0,0,0,0.15)]">
+            <mat-spinner [diameter]="24"/>
+        </div>
     }
-    <table mat-table [dataSource]="users || []" matSort (matSortChange)="sortBy($event)"  >
+    <table mat-table [dataSource]="users || []" matSort (matSortChange)="sortBy($event)">
         <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-            <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name</th>
+            <td mat-cell *matCellDef="let row"> {{ row.name }}</td>
         </ng-container>
 
         <ng-container matColumnDef="age">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Age </th>
-            <td mat-cell *matCellDef="let row"> {{row.age}} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Age</th>
+            <td mat-cell *matCellDef="let row"> {{ row.age }}</td>
         </ng-container>
 
         <ng-container matColumnDef="city">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> City </th>
-            <td mat-cell *matCellDef="let row"> {{row.city}} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> City</th>
+            <td mat-cell *matCellDef="let row"> {{ row.city }}</td>
         </ng-container>
 
         <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
-            <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Email</th>
+            <td mat-cell *matCellDef="let row"> {{ row.email }}</td>
         </ng-container>
 
         <ng-container matColumnDef="subscribe">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Subscribe </th>
-            <td mat-cell *matCellDef="let row"> {{row.subscribe}} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Subscribe</th>
+            <td mat-cell *matCellDef="let row"> {{ row.subscribe }}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-            <tr class="mat-row h-24" *matNoDataRow>
-                <td class="mat-cell text-center" colspan="5">
-                    @if (usersHttpsResponse.isLoading()) {
-                        Loading users...
-                    } @else {
-                        No users found.
-                    }
-                </td>
-            </tr>
+        <tr class="mat-row h-24" *matNoDataRow>
+            <td class="mat-cell text-center" colspan="5">
+                @if (usersHttpsResponse.isLoading()) {
+                    Loading users...
+                } @else {
+                    No users found.
+                }
+            </td>
+        </tr>
 
         @if (usersHttpsResponse.error()) {
             <tr class="mat-row h-24" *matNoDataRow>
-                <td class="mat-cell text-center" colspan="5">{{usersHttpsResponse.error()}}...</td>
+                <td class="mat-cell text-center" colspan="5">{{ usersHttpsResponse.error() }}...</td>
             </tr>
         }
     </table>
 </div>
-<mat-paginator (page)="paginationEvent($event)" [length]="pagination?.length" [pageIndex]="pagination?.pageIndex" [pageSize]="pagination?.pageSize ?? 20" aria-label="Select page of users"></mat-paginator>
+<mat-paginator (page)="paginationEvent($event)"
+               [pageSize]="20"
+               [pageIndex]="paramsData?.pagination?.pageIndex ?? 0"
+               [length]="paramsData?.pagination?.length"
+               aria-label="Select page of users"></mat-paginator>
 
